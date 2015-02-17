@@ -7,23 +7,33 @@
 //
 
 #import "LINViewController.h"
+#import <NSObject+LINStorage.h>
 
 @interface LINViewController ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
 @implementation LINViewController
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+- (NSString *)imagePath {
+    return [NSString stringWithFormat:@"%@test.png", NSTemporaryDirectory()];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self downloadAndSave];
+    
+    _imageView.image = [UIImage lin_restoreFromFile:[self imagePath] error:nil];
+}
+
+- (void)downloadAndSave {
+    
+    NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://img.shields.io/travis/ryohey/LINStorage.png?style=flat"]];
+    UIImage *image = [UIImage imageWithData:imgData];
+    [image lin_storeToFile:[self imagePath] error:nil];
 }
 
 @end

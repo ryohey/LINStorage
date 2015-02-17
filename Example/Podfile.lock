@@ -1,0 +1,14 @@
+PODS:
+  - LINStorage (0.1.0)
+
+DEPENDENCIES:
+  - LINStorage (from `../`)
+
+EXTERNAL SOURCES:
+  LINStorage:
+    :path: ../
+
+SPEC CHECKSUMS:
+  LINStorage: 8d136362e12703391f5dcb030f35690f555b56d1
+
+COCOAPODS: 0.35.0
