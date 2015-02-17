@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "LINStorage"
-  s.version          = "0.1.1"
+  s.version          = "0.1.2"
   s.summary          = "Simple NSKeyedArchiver wrapper"
   s.homepage         = "https://github.com/ryohey/LINStorage"
   s.license          = 'MIT'
