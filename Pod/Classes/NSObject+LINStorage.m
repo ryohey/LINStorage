@@ -19,7 +19,7 @@
                                                                  error:error];
     
     if (!success) {
-        if (!*error) {
+        if (error && !*error) {
             *error = [NSError errorWithDomain:LINStorageErrorDomain
                                          code:LINStorageErrorArchiveObjectFailed
                                      userInfo:@{NSLocalizedDescriptionKey: @"Failed to createDirectoryAtPath:withIntermediateDirectories:attributeserror:"}];
@@ -28,7 +28,7 @@
         return;
     }
     
-    if (![NSKeyedArchiver archiveRootObject:self toFile:file]) {
+    if (![NSKeyedArchiver archiveRootObject:self toFile:file] && error) {
         
         *error = [NSError errorWithDomain:LINStorageErrorDomain
                                      code:LINStorageErrorArchiveObjectFailed
@@ -45,12 +45,14 @@
         obj = [NSKeyedUnarchiver unarchiveObjectWithFile:file];
         
     } @catch (NSException *e) {
-        *error = [NSError errorWithDomain:LINStorageErrorDomain
-                                     code:LINStorageErrorUnarchiveObjectFailed
-                                 userInfo:@{NSLocalizedDescriptionKey: e.description}];
+        if (error) {
+            *error = [NSError errorWithDomain:LINStorageErrorDomain
+                                         code:LINStorageErrorUnarchiveObjectFailed
+                                     userInfo:@{NSLocalizedDescriptionKey: e.description}];
+        }
     }
     
-    if (![obj isKindOfClass:self]) {
+    if (![obj isKindOfClass:self] && error) {
         *error = [NSError errorWithDomain:LINStorageErrorDomain
                                      code:LINStorageErrorRestoreDifferentClass
                                  userInfo:@{NSLocalizedDescriptionKey: @"Restored object is not self class"}];
